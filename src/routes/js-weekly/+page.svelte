@@ -16,7 +16,7 @@
 
 <div class="container">
   <header>
-    <h1 class="title">Article Search</h1>
+    <h1 class="title">Javascript Weekly Search</h1>
   </header>
   (note, i am doing something wrong with my searialization, so change the limit to lower if you're not
   getting results)
