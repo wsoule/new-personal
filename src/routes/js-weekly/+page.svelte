@@ -1,16 +1,25 @@
 <script lang="ts">
   import { enhance } from '$app/forms';
+  import type { PageProps } from '../$types';
+  let { data: latestData }: PageProps = $props();
+
+  console.log('data = ', latestData);
   // Track the loading state for the search
   let searching = false;
 
   // The "data" prop holds the action return values: search results or a message
-  export let data: {
-    results?: {
-      pageContent: string;
-      // metadata now includes title, link, and issueDate
-      metadata: Record<string, any> & { title: string; link: string; issueDate: string };
-    }[];
-    message?: string;
+  let data:
+    | {
+        results?: {
+          pageContent: string;
+          // metadata now includes title, link, and issueDate
+          metadata: Record<string, any> & { title: string; link: string; issueDate: string };
+        }[];
+        message?: string;
+      }
+    | undefined = $state();
+  const fetchLatestData = async () => {
+    await fetch('/api/article/add-missing').then((res) => res.json());
   };
 </script>
 
@@ -20,6 +29,14 @@
   </header>
   (note, i am doing something wrong with my sanitization, so change the limit to lower if you're not
   getting results)
+  <p class="subtitle">
+    Search the latest issues of JavaScript Weekly, a free weekly newsletter about JavaScript and web
+    development.
+  </p>
+  <p>Last issue date: {latestData.latestIssueDate}</p>
+  <p>Last issue: <a href={latestData.latestIssueUrl}>{latestData.latestIssueUrl}</a></p>
+  <p>Get Latest issues into db</p>
+  <button onclick={fetchLatestData}>away we go</button>
   <div class="search-card surface-2">
     <!-- Form displayed as a grid -->
     <form
@@ -47,12 +64,12 @@
     {#if searching}
       <p class="loading">Searching...</p>
     {/if}
-    {#if data.message}
+    {#if data?.message}
       <p class="error">{data.message}</p>
     {/if}
   </div>
 
-  {#if data.results}
+  {#if data?.results}
     <section class="results">
       <h2>Search Results</h2>
       <ul class="results-grid">

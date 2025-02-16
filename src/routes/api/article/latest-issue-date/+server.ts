@@ -19,10 +19,13 @@ export const GET: RequestHandler = async () => {
     await client.close();
 
     if (latestDoc && latestDoc.issueDate) {
-      return new Response(JSON.stringify({ latestIssueDate: latestDoc.issueDate }), {
-        status: 200,
-        headers: { 'Content-Type': 'application/json' }
-      });
+      return new Response(
+        JSON.stringify({ latestIssueDate: latestDoc.issueDate, url: latestDoc.issueLink }),
+        {
+          status: 200,
+          headers: { 'Content-Type': 'application/json' }
+        }
+      );
     } else {
       return new Response(JSON.stringify({ message: 'No articles found.' }), {
         status: 404,

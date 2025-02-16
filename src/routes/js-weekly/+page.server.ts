@@ -23,7 +23,12 @@ export const actions: Actions = {
   }
 };
 
-export const load: PageServerLoad = async () => {
+export const load: PageServerLoad = async ({ fetch }) => {
+  const latestIssue = await fetch('/api/article/latest-issue-date').then((res) => res.json());
   // Initially, no search has been performed.
-  return {};
+  console.log('latest issue', latestIssue);
+  return {
+    latestIssueDate: latestIssue.latestIssueDate,
+    latestIssueUrl: latestIssue.url
+  };
 };
