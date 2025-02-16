@@ -22,10 +22,7 @@ const config = {
   ],
 
   kit: {
-    adapter: adapter(),
-    alias: {
-      '@/*': './src/lib/*'
-    }
+    adapter: adapter()
   },
 
   extensions: ['.svelte', '.svx', '.md'],
