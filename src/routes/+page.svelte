@@ -15,7 +15,7 @@
       <li class="post">
         <a href={post.slug} class="title">{post.title}</a>
         <p class="date">{formatDate(post.date)}</p>
-        <p class="description">{post.description}</p>
+        <p class="description">{post.description.substring(0, 200) + '...'}</p>
       </li>
     {/each}
   </ul>
