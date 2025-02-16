@@ -73,7 +73,10 @@
 		"@oslojs/encoding": "^1.1.0",
 		"drizzle-orm": "^0.38.4",
 		"lucide-svelte": "^0.475.0",
-		"open-props": "^1.7.12"
+		"open-props": "^1.7.12",
+		"rehype-slug": "^6.0.0",
+		"remark-toc": "^9.0.0",
+		"shiki": "^2.4.1"
 	},
 	"pnpm": {
 		"onlyBuiltDependencies": [
