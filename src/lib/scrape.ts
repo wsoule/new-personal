@@ -25,13 +25,6 @@ function formatDate(dateStr: string): string {
 }
 
 /**
- * Sanitize strings by removing null bytes.
- */
-function sanitize(text: string): string {
-  return text.replace(/[\x00-\x1F\x7F]/g, '').normalize('NFC');
-}
-
-/**
  * Parses the HTML of a JS Weekly issue and returns an array of Documents.
  */
 export function parseIssue(html: string, issueLink: string): Document[] {
@@ -58,26 +51,26 @@ export function parseIssue(html: string, issueLink: string): Document[] {
 
     const mainLink = descElement.find('span.mainlink a').first();
     if (!mainLink || mainLink.length === 0) return;
-    const articleTitle = sanitize(mainLink.text().trim());
+    const articleTitle = mainLink.text().trim();
     const articleLink = mainLink.attr('href')?.trim() || '';
 
     const pClone = descElement.clone();
     pClone.find('span.mainlink').remove();
-    let description = sanitize(pClone.text().trim());
+    let description = pClone.text().trim();
     if (description.startsWith('—')) {
       description = description.substring(1).trim();
     }
 
     const metadata: ArticleMetadata = {
-      title: articleTitle,
-      link: sanitize(articleLink),
-      issueNumber: sanitize(issueNumber),
-      issueLink: sanitize(issueLink),
+      title: articleTitle.toString(),
+      link: articleLink,
+      issueNumber: issueNumber,
+      issueLink: issueLink,
       issueDate,
       description
     };
 
-    const pageContent = sanitize(`${articleTitle}\n\n${description}`);
+    const pageContent = `${articleTitle}\n\n${description}`;
     documents.push({ pageContent, metadata });
   });
 
@@ -113,26 +106,26 @@ export async function vectorizeIssue(html: string, issueLink: string): Promise<v
 
       const mainLink = descElement.find('span.mainlink a').first();
       if (!mainLink || mainLink.length === 0) return;
-      const articleTitle = sanitize(mainLink.text().trim());
+      const articleTitle = mainLink.text().trim();
       const articleLink = mainLink.attr('href')?.trim() || '';
 
       const pClone = descElement.clone();
       pClone.find('span.mainlink').remove();
-      let description = sanitize(pClone.text().trim());
+      let description = pClone.text().trim();
       if (description.startsWith('—')) {
         description = description.substring(1).trim();
       }
 
       const metadata: ArticleMetadata = {
-        title: articleTitle,
-        link: sanitize(articleLink),
-        issueNumber: sanitize(issueNumber),
+        title: `${articleTitle}`,
+        link: articleLink.toString(),
+        issueNumber: issueNumber.toString(),
         issueLink,
         issueDate,
         description
       };
 
-      const pageContent = sanitize(`${articleTitle}\n\n${description}`);
+      const pageContent = `${articleTitle}\n\n${description}`;
       documents.push({ pageContent, metadata });
       ids.push(`${issueNumber}-${i}`);
     });

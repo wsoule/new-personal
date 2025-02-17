@@ -25,7 +25,9 @@ async function getVectorStore(): Promise<MongoDBAtlasVectorSearch> {
     const client = new MongoClient(MONGODB_ATLAS_URI || '');
     await client.connect();
     const db = client.db(MONGODB_ATLAS_DB_NAME);
-    const collection = db.collection(MONGODB_ATLAS_COLLECTION_NAME);
+    const collection = db.collection(MONGODB_ATLAS_COLLECTION_NAME, {
+      enableUtf8Validation: false
+    });
 
     // Initialize OpenAI embeddings
     const embeddings = new OpenAIEmbeddings({
