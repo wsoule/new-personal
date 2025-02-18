@@ -41,8 +41,7 @@ Sample code will use C# but concepts and patterns will apply to other languages 
 
 ---
 
-### ADDED BY GPT
 
-- Reorganized and clarified the notes for better readability.
+
 
 # Transcript

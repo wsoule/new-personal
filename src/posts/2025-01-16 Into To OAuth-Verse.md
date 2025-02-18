@@ -86,7 +86,7 @@ If you're after a talk that will give you the confidence to tackle any OAuth imp
 
 ---
 
-### ADDED BY GPT
 
-- Reformatted the notes for clarity and better organization.
+
+
 

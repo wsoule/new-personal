@@ -8,6 +8,10 @@ categories:
 published: true
 ---
 
+Github link: https://github.com/guyroyse/florida-man-uses-cache-as-database/tree/main
+
+This was a talk by Guy Royse at CodeMash 2025.
+
 Description
 
 Florida Man loves speed. He loves it so much that he’s going to do the unthinkable—he's going to use a cache as his primary database. We'll explore just how Florida Man will do this without losing persistence and without having to drop ACID—that's atomicity, consistency, isolation, and durability. And we'll see that Florida Man can have all the CRUD a database provides and the blazing fast speed that a cache provides.
@@ -42,6 +46,5 @@ When it's all said and done, you'll see how a cache like Redis can be persistent
 
 ---
 
-### ADDED BY GPT
 
-- Reformatted the notes for enhanced readability and structured sections.
+

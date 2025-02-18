@@ -83,8 +83,8 @@ Attending this session will help you:
 
 ---
 
-### ADDED BY GPT
 
-- Reformatted the notes for improved clarity and organization.
+
+
 
 # Transcript
