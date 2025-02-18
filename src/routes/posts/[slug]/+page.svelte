@@ -61,15 +61,13 @@
 
 <section id="add-comment">
   <h2>Add a Comment</h2>
-  <!-- The form uses enhance so that on submission it updates the comment data -->
+  <!-- The form uses enhance so that on submission it updates the comment data and then resets the form -->
   <form
     method="post"
     use:enhance={() => {
       submitting = true;
-      return async ({ result }) => {
-        // Update the actionData with the result returned from the server
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        actionData = (result as any).data;
+      return async ({ update }) => {
+        await update();
         submitting = false;
       };
     }}
