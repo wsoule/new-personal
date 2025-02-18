@@ -2,32 +2,49 @@ export const prerender = false;
 
 import { fail, redirect } from '@sveltejs/kit';
 import type { Actions } from './$types';
+import { MongoClient } from 'mongodb';
+import {
+  MONGODB_ATLAS_ARTICLE_COLLECTION_NAME,
+  MONGODB_ATLAS_DB_NAME,
+  MONGODB_ATLAS_URI
+} from '$env/static/private';
 
 export const actions: Actions = {
-  comment: async ({ request, params, fetch }) => {
-    // Get data from the submitted form.
-    const data = await request.formData();
-    const username = data.get('username') as string;
-    const text = data.get('text') as string;
+  default: async ({ request, params }) => {
+    const formData = await request.formData();
+    const username = formData.get('username')?.toString().trim() || 'Anonymous';
+    const text = formData.get('text')?.toString().trim();
 
-    // Validate that a comment text has been provided.
+    const serializeComment = (comment: any) => ({
+      ...comment,
+      _id: comment._id.toString(),
+      createdAt: comment.createdAt ? new Date(comment.createdAt).toISOString() : null
+    });
     if (!text) {
-      return fail(400, { error: 'Comment text is required' });
+      return { error: 'Comment text is required' };
     }
 
-    // Call the POST endpoint to create a new comment.
-    const res = await fetch(`/api/comments/${params.slug}`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ username, text })
+    const articleId = params.slug;
+    const client = new MongoClient(MONGODB_ATLAS_URI || '');
+    await client.connect();
+    const db = client.db(MONGODB_ATLAS_DB_NAME);
+    const collection = db.collection(MONGODB_ATLAS_ARTICLE_COLLECTION_NAME);
+
+    // Insert the new comment into MongoDB
+    await collection.insertOne({
+      articleId,
+      username,
+      text,
+      createdAt: new Date()
     });
 
-    if (!res.ok) {
-      const apiError = await res.json();
-      return fail(res.status, { error: apiError.error });
-    }
+    // Fetch the updated list of comments
+    const commentsRaw = await collection.find({ articleId }).toArray();
+    const comments = commentsRaw.map(serializeComment);
 
-    // Redirect to the same page to reload the content and comments.
-    throw redirect(303, `/${params.slug}`);
+    await client.close();
+    console.log('comments', comments);
+
+    return { comments };
   }
 };
