@@ -3,9 +3,8 @@
   import type { PageProps } from '../$types';
   let { data: latestData }: PageProps = $props();
 
-  console.log('data = ', latestData);
   // Track the loading state for the search
-  let searching = false;
+  let searching = $state(false);
 
   // The "data" prop holds the action return values: search results or a message
   let data:
@@ -13,6 +12,7 @@
         results?: {
           pageContent: string;
           // metadata now includes title, link, and issueDate
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
           metadata: Record<string, any> & { title: string; link: string; issueDate: string };
         }[];
         message?: string;
@@ -27,16 +27,13 @@
   <header>
     <h1 class="title">Javascript Weekly Search</h1>
   </header>
-  (note, i am doing something wrong with my sanitization, so change the limit to lower if you're not
-  getting results)
   <p class="subtitle">
     Search the latest issues of JavaScript Weekly, a free weekly newsletter about JavaScript and web
     development.
   </p>
   <p>Last issue date: {latestData.latestIssueDate}</p>
   <p>Last issue: <a href={latestData.latestIssueUrl}>{latestData.latestIssueUrl}</a></p>
-  <p>Get Latest issues into db</p>
-  <button onclick={fetchLatestData}>away we go</button>
+  <button onclick={fetchLatestData}>Get Latest Issue</button>
   <div class="search-card surface-2">
     <!-- Form displayed as a grid -->
     <form
@@ -45,6 +42,7 @@
       use:enhance={() => {
         searching = true;
         return async ({ result }) => {
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
           data = (result as any).data;
           searching = false;
         };

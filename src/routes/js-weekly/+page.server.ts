@@ -24,9 +24,9 @@ export const actions: Actions = {
 };
 
 export const load: PageServerLoad = async ({ fetch }) => {
+  fetch('/api/article/add-missing')
+
   const latestIssue = await fetch('/api/article/latest-issue-date').then((res) => res.json());
-  // Initially, no search has been performed.
-  console.log('latest issue', latestIssue);
   return {
     latestIssueDate: latestIssue.latestIssueDate,
     latestIssueUrl: latestIssue.url
